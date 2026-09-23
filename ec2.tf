@@ -1,6 +1,6 @@
 #--------------------key-pair--------------------------
 resource "aws_key_pair" "mykey" {
-      key_name = "terraform-key"
+      key_name = var.key_name
       public_key = file("terraform-key.pub")
 }
 
@@ -11,7 +11,7 @@ resource "aws_default_vpc" "default_vpc" {
 
 #-------------------security group---------------------
 resource "aws_security_group" "my_sg" {
-      name = "my-my_sg"
+      name = var.security_group_name
       vpc_id = aws_default_vpc.default_vpc.id
 }
 
@@ -41,16 +41,16 @@ resource "aws_vpc_security_group_egress_rule" "eg-rules" {
 #---------------------ec2------------------------------
 resource "aws_instance" "my_instance" {
     key_name = aws_key_pair.mykey.key_name
-    instance_type = "t3.micro"
+    instance_type = var.intance_type
     vpc_security_group_ids = [ aws_security_group.my_sg.id ]
     ami = data.aws_ami.ubuntu.id
     
     root_block_device {
-         volume_size = 10
-         volume_type = "gp3"
+         volume_size = var.volume_size
+         volume_type = var.volume_type
     }
 
     tags = {
-      Name = "first-terraform-instance"
+      Name = var.instance_name
     }
 }
