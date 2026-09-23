@@ -40,9 +40,10 @@ resource "aws_vpc_security_group_egress_rule" "eg-rules" {
 
 #---------------------ec2------------------------------
 resource "aws_instance" "my_instance" {
-    for_each = var.instances
+    # for_each = var.instances
+    count = 5
     key_name = aws_key_pair.mykey.key_name
-    instance_type = each.value
+    instance_type = "t3.micro"
     vpc_security_group_ids = [ aws_security_group.my_sg.id ]
     ami = data.aws_ami.ubuntu.id
     
@@ -52,6 +53,10 @@ resource "aws_instance" "my_instance" {
     }
 
     tags = {
-      Name = each.key
+      Name = "terraform-${count.index}"
     }
+
+    # tags = {
+    #   Name = each.key
+    # }
 }
