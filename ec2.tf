@@ -40,8 +40,9 @@ resource "aws_vpc_security_group_egress_rule" "eg-rules" {
 
 #---------------------ec2------------------------------
 resource "aws_instance" "my_instance" {
+    for_each = var.instances
     key_name = aws_key_pair.mykey.key_name
-    instance_type = var.intance_type
+    instance_type = each.value
     vpc_security_group_ids = [ aws_security_group.my_sg.id ]
     ami = data.aws_ami.ubuntu.id
     
@@ -51,6 +52,6 @@ resource "aws_instance" "my_instance" {
     }
 
     tags = {
-      Name = var.instance_name
+      Name = each.key
     }
 }

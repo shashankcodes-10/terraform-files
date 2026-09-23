@@ -27,3 +27,12 @@ variable "key_name" {
     default = "terraform-key"
     type = string
 }
+
+variable "instances" {
+  type = map(string)
+
+  default = {
+    instance1 = "t3.micro"
+    instance2 = "t3.micro"
+  }
+}
