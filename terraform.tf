@@ -8,8 +8,9 @@ terraform {
 
       backend "s3" {
          bucket = "terraform-secure-state-management"
-         dynamodb_table = "db_table"
+        #  dynamodb_table = "db_table"
          key = "terraform.tfstate"
          region = "us-west-2"
+         use_lockfile = true
       }
 }
